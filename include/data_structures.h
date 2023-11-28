@@ -173,3 +173,16 @@ List<T>::~List(){
     delete last;
     size=0;
 }
+
+template <class T>
+class Stack {
+    public:
+    Stack();
+    ~Stack();
+    
+
+
+    private:
+    Node<T> * bottom;
+    Node<T> * top;
+};
