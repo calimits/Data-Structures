@@ -18,7 +18,7 @@ template <class T>
 class List{
     public:
     List();
-    ~List();
+    virtual ~List();
     void inLast(const T &);
     void inFirst(const T &);
     void insert(const T &, int);
@@ -172,7 +172,7 @@ List<T>::~List(){
     Node<T> * cn=first->nn;
     while(size>0){
         cn=cn->nn;
-        cout<<"Deleting "<<cn->data<<endl;
+        cout<<"Deleting "<<cn->pn->data<<endl;
         delete cn->pn;
         size--;
     }
@@ -196,9 +196,7 @@ template <class T>
 Stack<T>::Stack() : List<T>(){}
 
 template <class T>
-Stack<T>::~Stack(){
-    List<T>::~List();
-}
+Stack<T>::~Stack() {}
 
 template <class T>
 void Stack<T>::push(const T & d){
