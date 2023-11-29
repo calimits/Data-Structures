@@ -1,3 +1,8 @@
+#include<iostream>
+
+using std::cout;
+using std::endl;
+
 //Declaración de la clase Node------------------------------------------------------------------------------
 template <class T>
 class Node{
@@ -36,8 +41,8 @@ class List{
 template <class T>
 List<T>::List(){
     this->size=0;
-    this->first=new Node();
-    this->last=new Node();
+    this->first=new Node<T>();
+    this->last=new Node<T>();
     first->pn=0;
     first->nn=last;
     last->pn=first;
@@ -46,7 +51,7 @@ List<T>::List(){
 
 template <class T>
 void List<T>::inLast(const T & d){
-    Node<T> * n=new Node();
+    Node<T> * n=new Node<T>();
     n->data=d;
 
     //Enlazando node
@@ -62,7 +67,7 @@ void List<T>::inLast(const T & d){
 
 template <class T>
 void List<T>::inFirst(const T & d){
-    Node<T> * n=new Node();
+    Node<T> * n=new Node<T>();
     n->data=d;
 
     //Enlazando  node
@@ -80,10 +85,10 @@ template <class T>
 void List<T>::insert(const T & d, int pos){
     if (pos>size || pos<0) throw "Position out of limits";
 
-    Node<T> *n=new Node();
+    Node<T> *n=new Node<T>();
     n->data=d;
 
-    Node<T> *cn=new Node();
+    Node<T> *cn=new Node<T>();
     cn=first->nn;
 
     for(int i=0; i<pos; i++){
@@ -109,8 +114,8 @@ void List<T>::deleteitem(int pos){
         cn=cn->nn;
     }
 
-    cn->pn->nn=cn->nn;
     cn->nn->pn=cn->pn;
+    cn->pn->nn=cn->nn;
     delete cn;
 
     size--;
@@ -154,7 +159,7 @@ int List<T>::getsize(){
 
 template <class T>
 Node<T> * List<T>::begin(){
-    return fisrt->nn;
+    return first->nn;
 }
 
 template <class T>
@@ -164,25 +169,61 @@ Node<T> * List<T>::end(){
 
 template <class T>
 List<T>::~List(){
-    Node<T> cn=first->nn;
-    for(int i=0;i<size;i++){
+    Node<T> * cn=first->nn;
+    while(size>0){
         cn=cn->nn;
+        cout<<"Deleting "<<cn->data<<endl;
         delete cn->pn;
+        size--;
     }
     delete first;
     delete last;
-    size=0;
 }
 
 template <class T>
-class Stack {
+class Stack : protected List<T> {
     public:
     Stack();
     ~Stack();
-    
-
-
-    private:
-    Node<T> * bottom;
-    Node<T> * top;
+    void push(const T & d);
+    T pop();
+    T & top();
+    Node<T> * begin();
+    Node<T> * end();
 };
+
+template <class T>
+Stack<T>::Stack() : List<T>(){}
+
+template <class T>
+Stack<T>::~Stack(){
+    List<T>::~List();
+}
+
+template <class T>
+void Stack<T>::push(const T & d){
+    this->inFirst(d);
+}
+
+template <class T>
+T Stack<T>::pop(){
+    return this->take(0);
+}
+
+template <class T>
+T & Stack<T>::top(){
+    return (this->get(this->getsize()-1));
+}
+
+template <class T>
+Node<T> * Stack<T>::begin(){
+    return List<T>::begin();
+}
+
+template <class T>
+Node<T> * Stack<T>::end(){
+    return List<T>::end();
+}
+
+
+
