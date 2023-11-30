@@ -172,10 +172,11 @@ List<T>::~List(){
     Node<T> * cn=first->nn;
     while(size>0){
         cn=cn->nn;
-        cout<<"Deleting "<<cn->pn->data<<endl;
+        cout<<"Deleting "<<cn->pn->data<<" ";
         delete cn->pn;
         size--;
     }
+    cout<<endl;
     delete first;
     delete last;
 }
@@ -223,5 +224,28 @@ Node<T> * Stack<T>::end(){
     return List<T>::end();
 }
 
+template <class T>
+class Queue : protected List<T>{
+    public:
+    Queue() : List<T>(){}
+    ~Queue(){}
+    void enqueue(const T &);
+    T dequeue();
+    T & front();
+};
 
+template <class T>
+void Queue<T>::enqueue(const T & d){
+    this->inLast(d);
+}
+
+template <class T>
+T Queue<T>::dequeue(){
+    return this->take(0);
+}
+
+template <class T>
+T & Queue<T>::front(){
+    return this->get(0);
+}
 
